@@ -32,15 +32,14 @@ public class Earthquake {
         mMag = mag;
     }
 
-    public long getTime() {
+    long getTime() {
         return mTime;
     }
 
-    public String getPlace() {
+    String getPlace() {
         return mPlace;
     }
 
-    public double getMag() {
-        return mMag;
-    }
-}
+    double getMag() { return mMag; }
+
+} // close class Earthquake
