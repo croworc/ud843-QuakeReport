@@ -4,42 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
     android:orientation="horizontal"
-    android:minHeight="?android:attr/listPreferredItemHeight" >
+    android:paddingLeft="16dp"
+    android:paddingStart="16dp"
+    android:paddingRight="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/magnitude_textview"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="15"
+        android:layout_height="wrap_content"
+        android:layout_weight="12"
         style="@style/ListItemTextViewStyle"
         tools:text="8.9"/>
 
-    <TextView
-        android:id="@+id/location_textview"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="52"
-        style="@style/ListItemTextViewStyle"
-        tools:text="San Francisco, CA"/>
-
-    <!-- Vertical layout for date and time, stacked -->
+    <!-- Vertical linear layout for the location and (above it) the offset to that location -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="33">
+        android:layout_weight="53">
 
-        <!-- The date -->
+        <!-- The offset to the actual location, like "58 km SW of"-->
+        <TextView
+            android:id="@+id/offset_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="58km SW of"/>
+
+        <!-- The actual location, like "San Francisco, CA" -->
+        <TextView
+            android:id="@+id/location_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/ListItemTextViewStyle"
+            tools:text="San Francisco, CA"/>
+    </LinearLayout>
+
+
+    <!-- Vertical linear layout for date and time, stacked -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="35"
+        android:gravity="end">
+
+        <!-- The date of the event -->
         <TextView
             android:id="@+id/date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/ListItemTextViewStyle"
+            android:gravity="end"
             tools:text="Feb 6, 2010"/>
 
-        <!-- The time -->
+        <!-- The time of the event -->
         <TextView
             android:id="@+id/time_textview"
             android:layout_width="wrap_content"
