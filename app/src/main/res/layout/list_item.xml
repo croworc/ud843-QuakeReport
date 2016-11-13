@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:padding="8dp"
     android:orientation="horizontal"
     android:minHeight="?android:attr/listPreferredItemHeight" >
 
@@ -20,16 +20,32 @@
         android:id="@+id/location_textview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="50"
+        android:layout_weight="52"
         style="@style/ListItemTextViewStyle"
         tools:text="San Francisco, CA"/>
 
-    <TextView
-        android:id="@+id/time_textview"
+    <!-- Vertical layout for date and time, stacked -->
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="35"
-        style="@style/ListItemTextViewStyle"
-        tools:text="Feb 6, 2010"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="33">
+
+        <!-- The date -->
+        <TextView
+            android:id="@+id/date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ListItemTextViewStyle"
+            tools:text="Feb 6, 2010"/>
+
+        <!-- The time -->
+        <TextView
+            android:id="@+id/time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ListItemTextViewStyle"
+            tools:text="08:15"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -10,7 +10,7 @@ package datamodel;
 public class Earthquake {
 
     /** Unix timestamp (in milliseconds) of event */
-    private long mTime;
+    private long mTimeInMilliseconds;
 
     /** Descriptive location of the closest town w/ more than 1000 inhabitants */
     private String mPlace;
@@ -27,13 +27,13 @@ public class Earthquake {
      * @param mag       The magnitude, like 4.5
      */
     public Earthquake(long time, String place, double mag) {
-        mTime = time;
+        mTimeInMilliseconds = time;
         mPlace = place;
         mMag = mag;
     }
 
-    long getTime() {
-        return mTime;
+    long getTimeInMilliseconds() {
+        return mTimeInMilliseconds;
     }
 
     String getPlace() {

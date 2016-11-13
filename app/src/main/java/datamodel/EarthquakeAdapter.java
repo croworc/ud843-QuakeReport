@@ -30,6 +30,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private static class ViewHolder {
         TextView magnitudeTextView;
         TextView locationTextView;
+        TextView dateTextView;
         TextView timeTextView;
     }
 
@@ -76,8 +77,13 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             // in the ViewHolder for later re-use.
             viewHolder.magnitudeTextView = (TextView) convertView
                     .findViewById(R.id.magnitude_textview);
+
             viewHolder.locationTextView = (TextView) convertView
                     .findViewById(R.id.location_textview);
+
+            viewHolder.dateTextView = (TextView) convertView
+                    .findViewById(R.id.date_textview);
+
             viewHolder.timeTextView = (TextView) convertView
                     .findViewById(R.id.time_textview);
 
@@ -94,7 +100,9 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // template view for this row.
         viewHolder.magnitudeTextView.setText(String.valueOf(earthquake.getMag()));
         viewHolder.locationTextView.setText(earthquake.getPlace());
-        viewHolder.timeTextView.setText(DateUtil.getSimpleDate(earthquake.getTime()) );
+        long timestamp = earthquake.getTimeInMilliseconds();
+        viewHolder.dateTextView.setText(DateUtil.getSimpleDate(timestamp) );
+        viewHolder.timeTextView.setText(DateUtil.getSimpleTime(timestamp) );
 
         // Return the completed view to be rendered on screen.
         return convertView;
