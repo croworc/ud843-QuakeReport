@@ -9,7 +9,7 @@ package datamodel;
 
 public class Earthquake {
 
-    /** Unix mTime stamp of event */
+    /** Unix timestamp (in milliseconds) of event */
     private long mTime;
 
     /** Descriptive location of the closest town w/ more than 1000 inhabitants */

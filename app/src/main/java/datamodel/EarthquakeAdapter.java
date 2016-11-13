@@ -34,11 +34,15 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     }
 
     /**
-     * Creates a new EarthquakeAdapter, with a context (the activity) and a List of
-     * Earthquake objects.
+     * An {@link EarthquakeAdapter} knows how to create a list item layout for each earthquake
+     * in the data source (a list of {@link Earthquake} objects).
      *
-     * @param context           The calling activity
-     * @param earthquakeList    The list of Earthquake objects
+     * These list item layouts will be provided to an adapter view like ListView
+     * to be displayed to the user.
+     *
+     * @param context        the calling activity
+     * @param earthquakeList is the list of Earthquake objects, which is the data source
+     *                       of the adapter
      */
     public EarthquakeAdapter(Context context, List<Earthquake> earthquakeList) {
         super(context, 0, earthquakeList);
@@ -51,7 +55,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Get the data item for this position
         Earthquake earthquake = getItem(position);
 
-        // Should we happen not to have a null reference for the Earthquake object, just return
+        // Should we happen to have a null reference for the Earthquake object, just return
         // the unmodified list item layout
         if (earthquake == null) { return convertView;}
 
@@ -94,5 +98,6 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // Return the completed view to be rendered on screen.
         return convertView;
-    }
-}
+    } // close getView()
+
+} // close class EarthquakeAdapter

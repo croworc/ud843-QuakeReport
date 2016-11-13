@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import datamodel.Earthquake;
 import datamodel.EarthquakeAdapter;
+import util.QueryUtils;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -36,13 +37,15 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         // Create a fake list of earthquake locations.
         ArrayList<Earthquake> earthquakes = new ArrayList<>();
+        earthquakes = QueryUtils.extractEarthquakes();
+/*
         earthquakes.add(new Earthquake(100, "San Francisco", 4.1));
         earthquakes.add(new Earthquake(101, "London", 3.6));
         earthquakes.add(new Earthquake(102, "Tokyo", 2.1));
         earthquakes.add(new Earthquake(103, "Mexico City", 4.1));
         earthquakes.add(new Earthquake(104, "Moscow", 2.2));
         earthquakes.add(new Earthquake(105, "Rio de Janeiro", 1.7));
-        earthquakes.add(new Earthquake(106, "Paris", 5.1));
+        earthquakes.add(new Earthquake(106, "Paris", 5.1));*/
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);

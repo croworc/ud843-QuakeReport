@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     android:orientation="horizontal"
     android:minHeight="?android:attr/listPreferredItemHeight" >
 
@@ -11,20 +13,23 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="15"
-        style="@style/ListItemTextViewStyle"/>
+        style="@style/ListItemTextViewStyle"
+        tools:text="8.9"/>
 
     <TextView
         android:id="@+id/location_textview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="50"
-        style="@style/ListItemTextViewStyle"/>
+        style="@style/ListItemTextViewStyle"
+        tools:text="San Francisco, CA"/>
 
     <TextView
         android:id="@+id/time_textview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="35"
-        style="@style/ListItemTextViewStyle"/>
+        style="@style/ListItemTextViewStyle"
+        tools:text="Feb 6, 2010"/>
 
 </LinearLayout>
