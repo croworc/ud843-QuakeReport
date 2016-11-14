@@ -13,6 +13,7 @@ import com.example.android.quakereport.R;
 import java.util.List;
 
 import util.DateUtil;
+import util.NumberUtil;
 import util.TextUtil;
 
 /**
@@ -103,7 +104,9 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // Populate the data from the Earthquake object via the ViewHolder object into the
         // template view for this row.
-        viewHolder.magnitudeTextView.setText(String.valueOf(earthquake.getMag()));
+        // We begin with the magnitude and format it with one decimal place.
+        double mag = earthquake.getMag();
+        viewHolder.magnitudeTextView.setText(NumberUtil.formatMagnitude(mag));
 
         // The earthquake's location (place) will be used twice: for the location and its offset.
         String place = earthquake.getPlace();
