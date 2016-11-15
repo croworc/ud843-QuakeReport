@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.android.quakereport.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,6 +110,16 @@ public final class TextUtil {
         }
 
         return strLocation;
-    }
+    } // close method getLocation()
+
+
+    public static String formatMagnitude(Double mag) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        if (formatter instanceof DecimalFormat) {
+            ((DecimalFormat) formatter).applyPattern("0.0");
+        }
+        return formatter.format(mag);
+    } // close method formatMagnitude
+
 
 } // close class TextUtil

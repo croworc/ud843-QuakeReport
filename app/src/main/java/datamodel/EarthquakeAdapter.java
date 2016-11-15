@@ -1,6 +1,7 @@
 package datamodel;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+
 import com.example.android.quakereport.R;
 
 import java.util.List;
 
 import util.DateUtil;
-import util.NumberUtil;
 import util.TextUtil;
 
 /**
@@ -100,19 +101,27 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             // View is being recycled, retrieve the viewHolder object from the tag.
             viewHolder = (ViewHolder) convertView.getTag();
 
-        } // close checking for new vs. recycled convertView
+        } // close if/else (checking for new vs. recycled convertView)
 
         // Populate the data from the Earthquake object via the ViewHolder object into the
         // template view for this row.
-        // We begin with the magnitude and format it with one decimal place.
+
+        // We'll start with the magnitude; we'll display the magnitude value
+        // formatted with one decimal place).
         double mag = earthquake.getMag();
-        viewHolder.magnitudeTextView.setText(NumberUtil.formatMagnitude(mag));
+        viewHolder.magnitudeTextView.setText(TextUtil.formatMagnitude(mag));
+
+        // From the magnitude TextView: fetch the background (which is a GradientDrawable)...
+        GradientDrawable magnitudeCircle = (GradientDrawable) viewHolder.magnitudeTextView
+                .getBackground();
+        // ...and set its color based on the magnitude's category value.
+        int magnitudeColor = Earthquake.getMagnitudeColor(getContext(), mag);
+        magnitudeCircle.setColor(magnitudeColor);
 
         // The earthquake's location (place) will be used twice: for the location and its offset.
         String place = earthquake.getPlace();
         viewHolder.offsetTextView.setText(TextUtil.getLocationOffset(getContext(), place));
         viewHolder.locationTextView.setText(TextUtil.getLocation(place));
-
 
         // Analogously, the earthquake's Unix timestamp will be used twice: for the
         // date component as well as the time component.
