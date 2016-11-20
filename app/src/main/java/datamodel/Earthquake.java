@@ -6,11 +6,11 @@ import android.support.v4.content.ContextCompat;
 import com.example.android.quakereport.R;
 
 /**
- * This class models a single earthquake event, as reported by
+ * This class models a single {@link Earthquake} event, as reported by
  *     http://earthquake.usgs.gov/
  *
- * Provides helper methods to categorize an earthquake's magnitude and for obtaining a
- * color resource ID that pertains to such a given magnitude category;
+ * Provides a helper method for obtaining a color resource ID that pertains to
+ * a given magnitude category;
  *
  * Created by ingo on 11/10/16.
  */
@@ -30,9 +30,10 @@ public class Earthquake {
     private String mUrl;
 
     /**
-     * Creates a new Earthquake object with time of event, place description and the magnitude.
+     * Creates a new {@link Earthquake} object with time of event, place description
+     * and the magnitude.
      *
-     * @param time      Time of earthquake event in UTC
+     * @param time      Time of earthquake event, in UTC
      * @param place     Textual description of location of event, for closest location w/ more than
      *                  1000 inhabitants, if available
      * @param mag       The magnitude, like 4.5
@@ -57,12 +58,12 @@ public class Earthquake {
     public String getUrl() { return mUrl; }
 
     /**
-     * Returns the color RGB integer value that's associated with a given, passed-in magnitude
-     * value.
+     * Returns the earthquake magnitude category's color RGB integer value for a
+     * passed-in magnitude value.
      *
      * @param context   The EarthquakeAdapter
      * @param mag       The earthquake's magnitude; a double value like 2.9
-     * @return          A color RGB value, that's associated with the passed-inmagnitude
+     * @return          A color RGB value, that's associated with the passed-in magnitude
      */
     static int getMagnitudeColor(Context context, double mag) {
 

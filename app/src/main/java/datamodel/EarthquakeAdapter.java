@@ -61,24 +61,22 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         Earthquake earthquake = getItem(position);
 
         // Should we happen to have a null reference for the Earthquake object, just return
-        // the unmodified list item layout
+        // the unmodified list item layout (i.e. the "row").
         if (earthquake == null) { return convertView;}
 
-        // Check if an existing view is being reused, otherwise inflate the view.
+        // Check if an existing view is being reused, otherwise inflate a new view.
         ViewHolder viewHolder; // view lookup cache, is being stored in convertView's tag
         if (convertView == null) {
-            // There's no view to re-use, so we'll inflate a brand new view for this row.
-            viewHolder = new ViewHolder();
-
+            // There's no view to re-use, so we'll inflate a brand new one for this row.
+            viewHolder = new ViewHolder(); // We also need a new ViewHolder object.
             // Obtain a LayoutInflater from the Context object (activity) that has been
             // passed into this adapter's constructor.
             LayoutInflater inflater = LayoutInflater.from(getContext());
-
             // Inflate the custom layout for this row (list_item.xml).
             convertView = inflater.inflate(R.layout.list_item, parent, false);
 
-            // Fetch references to the TextViews we want to populate and store them away
-            // in the ViewHolder for later re-use.
+            // Next, we need to fetch references to the TextViews we want to populate
+            // and store them away in the ViewHolder for later re-use.
             viewHolder.magnitudeTextView = (TextView) convertView
                     .findViewById(R.id.magnitude_textview);
 
@@ -94,11 +92,11 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             viewHolder.timeTextView = (TextView) convertView
                     .findViewById(R.id.time_textview);
 
-            // Cache the viewHolder object inside the fresh view.
+            // Finally, we can cache the viewHolder object inside the fresh view.
             convertView.setTag(viewHolder);
 
         } else {
-            // View is being recycled, retrieve the viewHolder object from the tag.
+            // View is being recycled, so we can retrieve the existing viewHolder object from the tag.
             viewHolder = (ViewHolder) convertView.getTag();
 
         } // close if/else (checking for new vs. recycled convertView)
@@ -129,7 +127,8 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         viewHolder.dateTextView.setText(DateUtil.getSimpleDate(timestamp) );
         viewHolder.timeTextView.setText(DateUtil.getSimpleTime(timestamp) );
 
-        // Return the completed view to be rendered on screen.
+        // We're done with populating our views, so we return the completed view
+        // to be rendered on screen.
         return convertView;
     } // close getView()
 

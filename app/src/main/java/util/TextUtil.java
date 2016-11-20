@@ -37,7 +37,7 @@ public final class TextUtil {
     private TextUtil() {}
 
     /**
-     * Returns a String that depicts the offset in km to the earthquake's location.
+     * Returns a String that depicts the offset in km to the {@link datamodel.Earthquake} 's location.
      * This information is contained within the earthquake's location string ("place" attribute).
      * If *no* offset was provided, the place's string will be prefixed with "Near the".
      * Example:
