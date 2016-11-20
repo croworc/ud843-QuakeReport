@@ -32,6 +32,7 @@ import datamodel.Earthquake;
 import datamodel.EarthquakeAdapter;
 import util.QueryUtil;
 
+import static android.R.attr.data;
 import static android.R.attr.format;
 
 public class EarthquakeActivity extends AppCompatActivity
@@ -42,10 +43,8 @@ public class EarthquakeActivity extends AppCompatActivity
     private static final String QUERY_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?"
             + "format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
-    List<Earthquake>        mEarthquakes;
-    EarthquakeAdapter       mAdapter;
-    ListView                mEarthquakeListView;
-
+    ListView          mEarthquakeListView;
+    EarthquakeAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,37 +54,21 @@ public class EarthquakeActivity extends AppCompatActivity
         // Find and hold a reference to the {@link ListView} in the layout.
         mEarthquakeListView = (ListView) findViewById(R.id.list);
 
-        // Fire-up the background task which does the JSON fetching.
-        DownloadTask fetchJsonTask = new DownloadTask();
-        fetchJsonTask.execute(QUERY_URL);
+        // Create a new adapter that takes an empty list of earthquakes as input
+        mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
 
-    } // close method onCreate()
-
-
-    /**
-     *  Updates the UI when the background task has finished and provided us with
-     *  a list of earthquakes.
-     *  We'll use it as the backing list of an EarthquakeAdapter and attach
-     *  this newly created adapter to our ListView for eventually displaying the
-     *  earthquakes.
-     * @param earthquakes An ArrayList of earthquakes
-     */
-    private void updateUi(List<Earthquake> earthquakes) {
-
-        // Keep a reference to the array list in an instance variable.
-        mEarthquakes = earthquakes;
-
-        // Create a new {@link ArrayAdapter} of earthquakes.
-        mAdapter = new EarthquakeAdapter(this, earthquakes);
-
-        // Set this adapter on the {@link ListView}
-        // so the list can be populated in the user interface.
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
         mEarthquakeListView.setAdapter(mAdapter);
 
         // Attach the OnItemClickListener to the ListView.
         mEarthquakeListView.setOnItemClickListener(this);
 
-    } // close method updateUi()
+        // Fire-up the background task which does the JSON fetching.
+        DownloadTask fetchJsonTask = new DownloadTask();
+        fetchJsonTask.execute(QUERY_URL);
+
+    } // close method onCreate()
 
 
     /**
@@ -124,19 +107,29 @@ public class EarthquakeActivity extends AppCompatActivity
 
     private class DownloadTask extends AsyncTask<String, Void, List<Earthquake>> {
         @Override
-        protected List<Earthquake> doInBackground(String... strings) {
-            // If no URL has been passed-in, or the URL string is the empty string, return early.
-            if (strings.length == 0 || strings[0].length() == 0) {return null;}
+        protected List<Earthquake> doInBackground(String... urls) {
 
-            return QueryUtil.fetchEarthquakeData(strings[0]);
+            // If no URL has been passed-in, or the URL string is the empty string, return early.
+            if (urls.length == 0
+                    || urls[0] == null
+                    || urls[0].length() == 0) {return null;}
+
+            return QueryUtil.fetchEarthquakeData(urls[0]);
         }
 
         @Override
         protected void onPostExecute(List<Earthquake> earthquakes) {
-            // Now that we do have an ArrayList with earthquake objects, we can pass it on to
-            // a helper method which sets up the user interface.
-            updateUi(earthquakes);
-        }
+
+            // Clear the adapter of previous earthquake data
+            mAdapter.clear();
+
+            // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+            // data set. This will trigger the ListView to update.
+            if (earthquakes != null && !earthquakes.isEmpty()) {
+                mAdapter.addAll(earthquakes);
+            }
+        } // close method onPostExecute()
+
     } // close inner class DownloadTask
 
 } // close class EarthquakeActivity
