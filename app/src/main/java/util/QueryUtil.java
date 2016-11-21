@@ -42,6 +42,8 @@ public final class QueryUtil {
      */
     public static ArrayList<Earthquake> fetchEarthquakeData(String requestUrl) {
 
+        Log.d(LOG_TAG, "fetchEarthquakeData() called... ");
+
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -168,7 +170,7 @@ public final class QueryUtil {
         try {
             // Access the root of the JSON string.
             JSONObject root = new JSONObject(jsonString);
-            Log.d(LOG_TAG, "JSON string: " + root.toString());
+            // Log.d(LOG_TAG, "JSON string: " + root.toString());
 
             // Get the earthquakes array (node "features").
             JSONArray features = root.getJSONArray("features");
