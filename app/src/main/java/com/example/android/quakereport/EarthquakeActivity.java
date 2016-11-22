@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class EarthquakeActivity extends AppCompatActivity
             + "format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     ListView          mEarthquakeListView;  // The ListView
+    TextView          mEmptyView;           // A TextView to show when there's no data to display
+    ProgressBar       mProgressBar;         // Indeterminate spinner for displaying while data fetching
     EarthquakeAdapter mAdapter;             // Custom adapter for handling Earthquake objects
 
     @Override
@@ -67,6 +71,15 @@ public class EarthquakeActivity extends AppCompatActivity
 
         // Attach the OnItemClickListener to the ListView.
         mEarthquakeListView.setOnItemClickListener(this);
+
+        // Set the empty view on the ListView
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
+        mEarthquakeListView.setEmptyView(mEmptyView);
+
+        // Hold a reference to the indeterminate spinning progress bar, so that we can
+        // disable it when the data loading has finished.
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.VISIBLE);
 
         // Initialize an EarthquakeLoader, which will be responsible for fetching the
         // JSON data from the web.
@@ -131,6 +144,13 @@ public class EarthquakeActivity extends AppCompatActivity
         if (earthquakes != null && !earthquakes.isEmpty()) {
             mAdapter.addAll(earthquakes);
         }
+
+        // Hide the spinning progress bar
+        mProgressBar.setVisibility(View.GONE);
+
+        // On the empty view: set the text to display when no earthquake data was found.
+        mEmptyView.setText(R.string.empty_view_text);
+
     } // close method onLoadFinished()
 
 

@@ -44,6 +44,13 @@ public final class QueryUtil {
 
         Log.d(LOG_TAG, "fetchEarthquakeData() called... ");
 
+/*        // Simulate bad internet connection
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
         // Create URL object
         URL url = createUrl(requestUrl);
 
