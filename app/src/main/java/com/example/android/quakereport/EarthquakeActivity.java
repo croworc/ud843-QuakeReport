@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.LoaderManager;
@@ -76,15 +79,31 @@ public class EarthquakeActivity extends AppCompatActivity
         mEmptyView = (TextView) findViewById(R.id.empty_view);
         mEarthquakeListView.setEmptyView(mEmptyView);
 
-        // Hold a reference to the indeterminate spinning progress bar, so that we can
+        // Fetch a reference to the indeterminate spinning progress bar, so that we can
         // disable it when the data loading has finished.
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.VISIBLE);
 
-        // Initialize an EarthquakeLoader, which will be responsible for fetching the
-        // JSON data from the web.
-        getLoaderManager().initLoader(EARTHQUAKE_LOADER, null, this);
-        Log.d(LOG_TAG, "initLoader() called...");
+        // Check the network connection
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected() ) { // we're connected, so let's go
+            // Show the spinning indeterminate progress bar.
+            mProgressBar.setVisibility(View.VISIBLE);
+
+            // Initialize an EarthquakeLoader, which will be responsible for fetching the
+            // JSON data from the web.
+            Log.d(LOG_TAG, "initLoader() called...");
+            getLoaderManager().initLoader(EARTHQUAKE_LOADER, null, this);
+
+        } else { // not currently connected
+            // Hide the spinning indeterminate progress bar.
+            mProgressBar.setVisibility(View.GONE);
+
+            // Show message in the empty view for checking internet connection
+            mEmptyView.setText(R.string.empty_view_text_nointernet);
+        }
+
     } // close method onCreate()
 
 
@@ -149,7 +168,7 @@ public class EarthquakeActivity extends AppCompatActivity
         mProgressBar.setVisibility(View.GONE);
 
         // On the empty view: set the text to display when no earthquake data was found.
-        mEmptyView.setText(R.string.empty_view_text);
+        mEmptyView.setText(R.string.empty_view_text_nodata);
 
     } // close method onLoadFinished()
 
