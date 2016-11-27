@@ -42,7 +42,7 @@ public final class QueryUtil {
      */
     public static ArrayList<Earthquake> fetchEarthquakeData(String requestUrl) {
 
-        Log.d(LOG_TAG, "fetchEarthquakeData() called... ");
+        // Log.d(LOG_TAG, "fetchEarthquakeData() called... ");
 
 /*        // Simulate bad internet connection
         try {

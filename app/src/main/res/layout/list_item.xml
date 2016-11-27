@@ -9,6 +9,7 @@
     android:paddingRight="16dp"
     android:paddingStart="16dp">
 
+    <!-- The Magnitude, displayed in a colored circle. The color depends on the magnitude -->
     <TextView
         android:id="@+id/magnitude_textview"
         android:layout_width="36dp"
@@ -21,6 +22,7 @@
         android:textSize="16sp"
         tools:text="8.9"/>
 
+    <!-- Vertical linear layout for the location and its offset (above the location) -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,6 +32,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!-- The location's offset to the nearest village w/ more than 1000 inhabitants -->
         <TextView
             android:id="@+id/offset_textview"
             android:layout_width="wrap_content"
@@ -42,6 +45,7 @@
             android:textSize="12sp"
             tools:text="30km S of"/>
 
+        <!-- The location, stripped of the offset -->
         <TextView
             android:id="@+id/location_textview"
             android:layout_width="wrap_content"
@@ -51,9 +55,9 @@
             android:textColor="@color/textColorEarthquakeLocation"
             android:textSize="16sp"
             tools:text="Long placeholder location that should wrap to more than 2 lines of text"/>
-
     </LinearLayout>
 
+    <!-- Vertical linear layout for the date and time of the event -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,6 +66,7 @@
         android:layout_marginStart="16dp"
         android:orientation="vertical">
 
+        <!-- The event's date, localized -->
         <TextView
             android:id="@+id/date_textview"
             android:layout_width="wrap_content"
@@ -71,6 +76,7 @@
             android:textSize="12sp"
             tools:text="Mar 6, 2010"/>
 
+        <!-- The event's time of day, localized -->
         <TextView
             android:id="@+id/time_textview"
             android:layout_width="wrap_content"

@@ -11,6 +11,9 @@ import java.util.List;
 import util.QueryUtil;
 
 /**
+ * Custom loader for fetching earthquake data in the background.
+ * Utilizes class QueryUtil.java for doing the hard work...
+ *
  * Created by ingo on 11/21/16.
  */
 public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
@@ -38,19 +41,19 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
 
     @Override
     protected void onStartLoading() {
-        Log.d(LOG_TAG, "onStartLoading() called...");
+        // Log.d(LOG_TAG, "onStartLoading() called...");
         forceLoad();
     }
 
     @Override
     public List<Earthquake> loadInBackground() {
-        Log.d(LOG_TAG, "loadInBackground() called...");
+        // Log.d(LOG_TAG, "loadInBackground() called...");
 
         // If no URL string has been passed into the constructor, or if the URL string
         // is the empty string, there's nothing to do right now. So just log that condition
         // and return early.
         if (mUrlString == null || mUrlString.length() == 0) {
-            Log.d(LOG_TAG, "in loadInBackground(): mUrlString is null or empty");
+            // Log.d(LOG_TAG, "in loadInBackground(): mUrlString is null or empty");
             return null;
         }
         // Call helper method for fetching the earthquakes as a List<Earthquake> and return
