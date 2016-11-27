@@ -17,14 +17,18 @@ package com.example.android.quakereport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -47,8 +51,9 @@ public class EarthquakeActivity extends AppCompatActivity
     private static final String LOG_TAG = EarthquakeActivity.class.getSimpleName();
     private static final int EARTHQUAKE_LOADER = 0;
 
-    private static final String QUERY_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?"
-            + "format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    private static final String USGS_REQUEST_URL =
+            "http://earthquake.usgs.gov/fdsnws/event/1/query";
+            // + "format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     ListView          mEarthquakeListView;  // The ListView
     TextView          mEmptyView;           // A TextView to show when there's no data to display
@@ -57,10 +62,14 @@ public class EarthquakeActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "onCreate() called...");
+        // Log.d(LOG_TAG, "onCreate() called...");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+
+        // When this app gets started for the very first time:
+        // Initialize the preferences with their default values (as defined in preferences.xml)
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Find and hold a reference to the {@link ListView} in the layout.
         mEarthquakeListView = (ListView) findViewById(R.id.list);
@@ -93,7 +102,7 @@ public class EarthquakeActivity extends AppCompatActivity
 
             // Initialize an EarthquakeLoader, which will be responsible for fetching the
             // JSON data from the web.
-            Log.d(LOG_TAG, "initLoader() called...");
+            // Log.d(LOG_TAG, "initLoader() called...");
             getLoaderManager().initLoader(EARTHQUAKE_LOADER, null, this);
 
         } else { // not currently connected
@@ -105,6 +114,42 @@ public class EarthquakeActivity extends AppCompatActivity
         }
 
     } // close method onCreate()
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu main.xml
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        // Call through to the superclass
+        return super.onCreateOptionsMenu(menu);
+    } // close method onCreateOptionsMenu()
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Which menu item has been clicked?
+        switch (item.getItemId()) {
+
+            // The "Settings" menu item got clicked...
+            case R.id.action_settings:
+                // ...so we'll start the settings activity
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+
+            case R.id.action_about:
+                // TODO: 11/23/16 Implementation required.
+                Toast.makeText(this, "Not currently implemented, sorry!", Toast.LENGTH_SHORT)
+                        .show();
+                return true;
+
+            default:
+                return  super.onOptionsItemSelected(item);
+        } // close switch
+
+    } // close method onOptionsItemSelected()
 
 
     /**
@@ -143,17 +188,47 @@ public class EarthquakeActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "onCreateLoader() called...");
+        // Log.d(LOG_TAG, "onCreateLoader() called...");
 
-        // Create and return a new EarthquakeLoader. Pass-in this activity's context and
-        // the statically defined query url.
-        return new EarthquakeLoader(this, QUERY_URL);
-    }
+        // Read the user's latest preferences for the
+        //   - "minimum magnitude", the
+        //   - "order-by" option (magnitude / time of event) and the
+        //   - "number of events to fetch".
+        //
+        // Construct a proper URI with their preferences and finally
+        // create a new Loader for that URI.
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get the "Minimum Magnitude" preference.
+        String minMagnitude = sharedPrefs.getString(getString(R.string.settings_min_magnitude_key), getString(R.string.settings_min_magnitude_default));
+
+        // Get the "Order-By" preference.
+        String orderBy = sharedPrefs.getString(getString(R.string.settings_order_by_key), getString(R.string.settings_order_by_default));
+
+        // Get the "Number of events to fetch" preference value (its an int)...
+        int numberEventsValue = sharedPrefs.getInt(
+                getString(R.string.settings_number_events_key),
+                Integer.parseInt(getString(R.string.settings_number_events_default)));
+        // ...and parse it to a String, to be used in the URL.
+        String numberEvents = String.valueOf(numberEventsValue);
+
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("limit", numberEvents);
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("orderby", orderBy);
+
+        // Create and return a new EarthquakeLoader. Pass in this activity's context and
+        // the newly constructed URL.
+        return new EarthquakeLoader(this, uriBuilder.toString());
+    } // close method onCreateLoader()
 
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
-        Log.d(LOG_TAG, "onLoadFinished() called...");
+        // Log.d(LOG_TAG, "onLoadFinished() called...");
 
         // Clear the adapter of previous earthquake data.
         mAdapter.clear();
@@ -175,7 +250,7 @@ public class EarthquakeActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
-        Log.d(LOG_TAG, "onLoaderReset() called...");
+        // Log.d(LOG_TAG, "onLoaderReset() called...");
 
         // Clear the adapter of previous earthquake data.
         mAdapter.clear();
